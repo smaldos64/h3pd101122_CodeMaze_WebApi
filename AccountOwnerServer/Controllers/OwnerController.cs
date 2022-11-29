@@ -68,6 +68,28 @@ namespace AccountOwnerServer.Controllers
             } 
         }
 
+        //[HttpGet("[action]")]
+        [HttpGet("GetOwnersByConditions")]
+        public IActionResult GetOwnersByConditions(string Condition, string FieldName)
+        {
+            try
+            {
+                //var owners = _repository.Owner.GetAllOwners(false);
+
+                var owners = _repository.Owner.GetOwnersByConditions(Condition, FieldName);
+
+                _logger.LogInfo($"Returned all owners from database.");
+
+                return Ok(owners);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetAllOwners action: {ex.Message}");
+
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
         [HttpGet("{id}", Name = "OwnerById")]
         public IActionResult GetOwnerById(Guid id)
         {
