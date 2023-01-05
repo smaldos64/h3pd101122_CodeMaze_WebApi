@@ -3,7 +3,7 @@ using Entities;
 
 namespace Repository
 {
-    public class RepositoryWrapper : IRepositoryWrapper 
+    public class RepositoryWrapper : IRepositoryWrapper
     { 
         private RepositoryContext _repoContext; 
         private IOwnerRepository _owner; 

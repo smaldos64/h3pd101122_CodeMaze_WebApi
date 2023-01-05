@@ -3,6 +3,10 @@ using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
+using Repository;
+using System.Linq.Expressions;
+
+using DynamicLinq;
 
 namespace AccountOwnerServer.Controllers
 {
@@ -50,6 +54,9 @@ namespace AccountOwnerServer.Controllers
 
                 _logger.LogInfo($"Returned all owners from database.");
 
+                // For at sikre at alle andre Endpoints bruger Lazy Loading !!!
+                _repository.Owner.EnableLazyLoading();
+
                 if (true == UseMapster)
                 {
                     var ownersResult = _mapper.Map<IEnumerable<OwnerDto>>(owners);
@@ -69,15 +76,22 @@ namespace AccountOwnerServer.Controllers
         }
 
         //[HttpGet("[action]")]
-        [HttpGet("GetOwnersByConditions")]
-        public IActionResult GetOwnersByConditions(string Condition, string FieldName)
+        //[HttpGet("GetOwnersByConditions")]
+        [HttpPost("GetOwnersByConditions")]
+        public IActionResult GetOwnersByConditions([FromBody] List<WebApiDynamicCommunication> WebApiDynamicCommunication_Object_List)
         {
             try
             {
                 //var owners = _repository.Owner.GetAllOwners(false);
 
-                var owners = _repository.Owner.GetOwnersByConditions(Condition, FieldName);
+                //var owners = _repository.Owner.GetOwnersByConditions(Condition, FieldName);
 
+                //var owners = _repository.Owner.GetOwnersByConditions(FieldName, Value, Expression);
+                //var owners = _repository.Owner.GetOwnersByConditions(WebApiCommunication_Object_List[0].FieldName, 
+                //                                                     WebApiCommunication_Object_List[0].Value,
+                //                                                     WebApiCommunication_Object_List[0].Expression);
+
+                var owners = _repository.Owner.GetOwnersByConditions(WebApiDynamicCommunication_Object_List);
                 _logger.LogInfo($"Returned all owners from database.");
 
                 return Ok(owners);

@@ -4,10 +4,11 @@ using System.Text;
 
 namespace Contracts
 {
-    public interface IRepositoryWrapper 
+    public interface IRepositoryWrapper
     { 
         IOwnerRepository Owner { get; } 
         IAccountRepository Account { get; } 
+        //IRepositoryExpressionCriteria<T> RepositoryExpressionCriteria { get; }
         void Save(); 
     }
 }
