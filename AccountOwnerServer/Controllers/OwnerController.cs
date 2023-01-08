@@ -82,16 +82,8 @@ namespace AccountOwnerServer.Controllers
         {
             try
             {
-                //var owners = _repository.Owner.GetAllOwners(false);
-
-                //var owners = _repository.Owner.GetOwnersByConditions(Condition, FieldName);
-
-                //var owners = _repository.Owner.GetOwnersByConditions(FieldName, Value, Expression);
-                //var owners = _repository.Owner.GetOwnersByConditions(WebApiCommunication_Object_List[0].FieldName, 
-                //                                                     WebApiCommunication_Object_List[0].Value,
-                //                                                     WebApiCommunication_Object_List[0].Expression);
-
-                var owners = _repository.Owner.GetOwnersByConditions(WebApiDynamicCommunication_Object_List);
+                //var owners = _repository.Owner.GetOwnersByConditions(WebApiDynamicCommunication_Object_List);
+                var owners = _repository.GetOwnersByConditions<Owner>(WebApiDynamicCommunication_Object_List);
                 _logger.LogInfo($"Returned all owners from database.");
 
                 return Ok(owners);

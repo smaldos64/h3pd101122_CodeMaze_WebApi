@@ -10,6 +10,6 @@ namespace Contracts
 {
     public interface IRepositoryExpressionCriteria<T> : IRepositoryBase<T> where T : class
     {
-        public IEnumerable<T> SetupAndExecuteLambdaExpression(List<WebApiDynamicCommunication> WebApiDynamicCommunication_Object_List);
+        public IEnumerable<T> SetupAndExecuteLambdaExpression<T>(List<WebApiDynamicCommunication> WebApiDynamicCommunication_Object_List);
     }
 }

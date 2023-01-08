@@ -46,42 +46,45 @@ namespace Repository
 
         public IEnumerable<Owner>? GetOwnersByConditions(List<WebApiDynamicCommunication> WebApiDynamicCommunication_Object_List)
         {
-            RepositoryExpressionCriteria<Owner> RepositoryExpressionCriteria_Object =
-                new RepositoryExpressionCriteria<Owner>();
+            //RepositoryExpressionCriteria<Owner> RepositoryExpressionCriteria_Object =
+            //    new RepositoryExpressionCriteria<Owner>();
 
-            RepositoryExpressionCriteria_Object.Add(WebApiDynamicCommunication_Object_List[0].FieldName,
-                                                    WebApiDynamicCommunication_Object_List[0].Value,
-                                                    WebApiDynamicCommunication_Object_List[0].Expression);
-            var Lambda = RepositoryExpressionCriteria_Object.GetLambda();
-            if (null != Lambda)
-            {
-                var LambdaCompile = Lambda.Compile();
-                return FindAll().Where(LambdaCompile);
-            }
-            else
-            {
-                return null;
-            }
+            //RepositoryExpressionCriteria_Object.Add(WebApiDynamicCommunication_Object_List[0].FieldName,
+            //                                        WebApiDynamicCommunication_Object_List[0].Value,
+            //                                        WebApiDynamicCommunication_Object_List[0].Expression);
+            //var Lambda = RepositoryExpressionCriteria_Object.GetLambda();
+            //if (null != Lambda)
+            //{
+            //    var LambdaCompile = Lambda.Compile();
+            //    return FindAll().Where(LambdaCompile);
+            //}
+            //else
+            //{
+            //    return null;
+            //}
+            return null;
         }
 
         public IEnumerable<Owner>? GetOwnersByConditions(string FieldName,
                                                          object Value, 
                                                          ExpressionType Expression)
         {
-            RepositoryExpressionCriteria<Owner> RepositoryExpressionCriteria_Object = 
-                new RepositoryExpressionCriteria<Owner>();
+            //RepositoryExpressionCriteria<Owner> RepositoryExpressionCriteria_Object = 
+            //    new RepositoryExpressionCriteria<Owner>();
 
-            RepositoryExpressionCriteria_Object.Add(FieldName, Value, Expression);
-            var Lambda = RepositoryExpressionCriteria_Object.GetLambda();
-            if (null != Lambda)
-            {
-                var LambdaCompile = Lambda.Compile();
-                return FindAll().Where(LambdaCompile);
-            }
-            else
-            {
-                return null;
-            }
+            //RepositoryExpressionCriteria_Object.Add(FieldName, Value, Expression);
+            //var Lambda = RepositoryExpressionCriteria_Object.GetLambda();
+            //if (null != Lambda)
+            //{
+            //    var LambdaCompile = Lambda.Compile();
+            //    return FindAll().Where(LambdaCompile);
+            //}
+            //else
+            //{
+            //    return null;
+            //}
+
+            return null;
         }
 
         public async Task<IEnumerable<Owner>> GetOwnersByConditions(string Condition,

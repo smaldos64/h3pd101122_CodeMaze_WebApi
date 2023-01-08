@@ -1,4 +1,5 @@
 ﻿using Contracts;
+using DynamicLinq;
 using Entities;
 
 namespace Repository
@@ -40,6 +41,35 @@ namespace Repository
         public void Save() 
         {
             _repoContext.SaveChanges();
-        } 
+        }
+
+        private IQueryable<T> FindAllDynamic<T>() where T : class
+        {
+#if (ENABLED_FOR_LAZY_LOADING_USAGE)
+            return _repoContext.Set<T>();
+#else
+            return this.RepositoryContext.Set<T>().AsNoTracking();
+#endif
+        }
+
+        public IEnumerable<T>? GetOwnersByConditions<T>(List<WebApiDynamicCommunication> WebApiDynamicCommunication_Object_List) where T : class
+        {
+            RepositoryExpressionCriteria<T> RepositoryExpressionCriteria_Object =
+                new RepositoryExpressionCriteria<T>();
+
+            RepositoryExpressionCriteria_Object.Add(WebApiDynamicCommunication_Object_List[0].FieldName,
+                                                    WebApiDynamicCommunication_Object_List[0].Value,
+                                                    WebApiDynamicCommunication_Object_List[0].Expression);
+            var Lambda = RepositoryExpressionCriteria_Object.GetLambda();
+            if (null != Lambda)
+            {
+                var LambdaCompile = Lambda.Compile();
+                return FindAllDynamic<T>().Where(LambdaCompile);
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

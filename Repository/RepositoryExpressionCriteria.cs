@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class RepositoryExpressionCriteria<T> : RepositoryBase<T> where T : class, IRepositoryExpressionCriteria<T>
+    public class RepositoryExpressionCriteria<T> //: RepositoryBase<T> where T : class, IRepositoryExpressionCriteria<T>
     {
         class RepositoryExpressionCriterion
         {
@@ -58,10 +58,6 @@ namespace Repository
 
         List<RepositoryExpressionCriterion> _expressionCriterion = new
             List<RepositoryExpressionCriterion>();
-
-        public RepositoryExpressionCriteria(RepositoryContext repositoryContext) : base(repositoryContext)
-        {
-        }
 
         public RepositoryExpressionCriteria<T> And()
         {
@@ -121,24 +117,24 @@ namespace Repository
                 Expression.Lambda<Func<T, bool>>(expression, parameterExpression) : null;
         }
 
-        public IEnumerable<T> SetupAndExecuteLambdaExpression<T>(List<WebApiDynamicCommunication> WebApiDynamicCommunication_Object_List)
-        {
-            RepositoryExpressionCriteria<T> RepositoryExpressionCriteria_Object =
-                new RepositoryExpressionCriteria<T>();
+        //public IEnumerable<T> SetupAndExecuteLambdaExpression<T>(List<WebApiDynamicCommunication> WebApiDynamicCommunication_Object_List)
+        //{
+        //    //RepositoryExpressionCriteria<T> RepositoryExpressionCriteria_Object =
+        //    //    new RepositoryExpressionCriteria<T>();
 
-            RepositoryExpressionCriteria_Object.Add(WebApiDynamicCommunication_Object_List[0].FieldName,
-                                                    WebApiDynamicCommunication_Object_List[0].Value,
-                                                    WebApiDynamicCommunication_Object_List[0].Expression);
-            var Lambda = RepositoryExpressionCriteria_Object.GetLambda();
-            if (null != Lambda)
-            {
-                var LambdaCompile = Lambda.Compile();
-                return FindAll().Where(LambdaCompile);
-            }
-            else
-            {
-                return null;
-            }
-        }
+        //    this.Add(WebApiDynamicCommunication_Object_List[0].FieldName,
+        //                                            WebApiDynamicCommunication_Object_List[0].Value,
+        //                                            WebApiDynamicCommunication_Object_List[0].Expression);
+        //    var Lambda = this.GetLambda();
+        //    if (null != Lambda)
+        //    {
+        //        var LambdaCompile = Lambda.Compile();
+        //        return (IEnumerable<T>)FindAll().Where(LambdaCompile);
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
     }
 }
