@@ -9,7 +9,7 @@ namespace Contracts
     { 
         IOwnerRepository Owner { get; } 
         IAccountRepository Account { get; }
-        //IRepositoryExpressionCriteria<T> RepositoryExpressionCriteria { get; }
+        ITestDynamicRepository Dynamic { get; }
         IEnumerable<T>? GetOwnersByConditions<T>(List<WebApiDynamicCommunication> WebApiDynamicCommunication_Object_List) where T : class;
         void Save(); 
     }

@@ -6,7 +6,15 @@ using NLog;
 using Entities;
 using System.Text.Json.Serialization;
 
+using Entities.Models;
+using System.Reflection;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var cl = new Owner();
+Type t = cl.GetType();
+//var FieldInfoObject = typeof(T).GetField(FieldName);
+var FieldInfoObject = t.GetField("name", BindingFlags.Public | BindingFlags.IgnoreCase | BindingFlags.Instance | BindingFlags.NonPublic);
 
 LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 

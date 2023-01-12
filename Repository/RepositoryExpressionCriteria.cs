@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Repository
 {
-    public class RepositoryExpressionCriteria<T> //: RepositoryBase<T> where T : class, IRepositoryExpressionCriteria<T>
+    public class RepositoryExpressionCriteria<T> 
     {
         class RepositoryExpressionCriterion
         {
@@ -33,6 +33,7 @@ namespace Repository
             PropertyInfo validateProperty(Type type, string propertyName)
             {
                 string[] parts = propertyName.Split('.');
+                //var Test = type.GetProperty(propertyName);
 
                 var info = (parts.Length > 1)
                 ? validateProperty(
@@ -64,7 +65,7 @@ namespace Repository
             this._andOr = "And";
             return this;
         }
-        public RepositoryExpressionCriteria<T> Or()
+        public RepositoryExpressionCriteria<T> Or() 
         {
             this._andOr = "Or";
             return this;
@@ -73,6 +74,8 @@ namespace Repository
         public RepositoryExpressionCriteria<T> Add(string propertyName,
                                                    object value, ExpressionType op)
         {
+            var Test = value.GetType();
+
             var newCriterion = new RepositoryExpressionCriterion(propertyName, value,
                 op, _andOr);
             this._expressionCriterion.Add(newCriterion);
@@ -112,29 +115,8 @@ namespace Repository
                 }
             }
 
-            //var test = Expression.Lambda<Func<T, bool>>(expression, parameterExpression);
             return expression != null ?
                 Expression.Lambda<Func<T, bool>>(expression, parameterExpression) : null;
         }
-
-        //public IEnumerable<T> SetupAndExecuteLambdaExpression<T>(List<WebApiDynamicCommunication> WebApiDynamicCommunication_Object_List)
-        //{
-        //    //RepositoryExpressionCriteria<T> RepositoryExpressionCriteria_Object =
-        //    //    new RepositoryExpressionCriteria<T>();
-
-        //    this.Add(WebApiDynamicCommunication_Object_List[0].FieldName,
-        //                                            WebApiDynamicCommunication_Object_List[0].Value,
-        //                                            WebApiDynamicCommunication_Object_List[0].Expression);
-        //    var Lambda = this.GetLambda();
-        //    if (null != Lambda)
-        //    {
-        //        var LambdaCompile = Lambda.Compile();
-        //        return (IEnumerable<T>)FindAll().Where(LambdaCompile);
-        //    }
-        //    else
-        //    {
-        //        return null;
-        //    }
-        //}
     }
 }

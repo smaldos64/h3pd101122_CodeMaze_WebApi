@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="IRepositoryExpressionCriteria.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DynamicLinq\DynamicLinq.csproj" />
     <ProjectReference Include="..\Entities\Entities.csproj" />
   </ItemGroup>

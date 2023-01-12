@@ -3,8 +3,8 @@ using Contracts;
 using Entities.DataTransferObjects;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
-using Repository;
-using System.Linq.Expressions;
+//using Repository;
+//using System.Linq.Expressions;
 
 using DynamicLinq;
 
@@ -75,8 +75,6 @@ namespace AccountOwnerServer.Controllers
             } 
         }
 
-        //[HttpGet("[action]")]
-        //[HttpGet("GetOwnersByConditions")]
         [HttpPost("GetOwnersByConditions")]
         public IActionResult GetOwnersByConditions([FromBody] List<WebApiDynamicCommunication> WebApiDynamicCommunication_Object_List)
         {
@@ -87,6 +85,24 @@ namespace AccountOwnerServer.Controllers
                 _logger.LogInfo($"Returned all owners from database.");
 
                 return Ok(owners);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong inside GetAllOwners action: {ex.Message}");
+
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPost("GetTestDynamicsByConditions")]
+        public IActionResult GetTestDynamicsByConditions([FromBody] List<WebApiDynamicCommunication> WebApiDynamicCommunication_Object_List)
+        {
+            try
+            {
+                var testDynamics = _repository.GetOwnersByConditions<TestDynamic>(WebApiDynamicCommunication_Object_List);
+                _logger.LogInfo($"Returned all owners from database.");
+
+                return Ok(testDynamics);
             }
             catch (Exception ex)
             {

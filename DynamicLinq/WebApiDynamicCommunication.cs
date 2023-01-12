@@ -9,8 +9,8 @@ namespace DynamicLinq
 {
     public class WebApiDynamicCommunication
     {
-        public string FieldName { get; set; }
-        public string Value { get; set; }
+        public string? FieldName { get; set; }
+        public dynamic? Value { get; set; }
         public ExpressionType Expression { get; set; }
     }
 }
