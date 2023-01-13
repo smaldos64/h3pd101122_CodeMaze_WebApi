@@ -2,6 +2,7 @@
 using DynamicLinq;
 using Entities;
 using Entities.Models;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 //using Newtonsoft.Json;
 using System;
@@ -78,30 +79,30 @@ namespace Repository
             return InputValue.Trim('"');
         }
 
-        public static FieldInfo GetFieldOrPropertyType<T>(string FieldName)
-        {
-            //var cl = new Owner();
-            //Type t = cl.GetType();
-            ////var FieldInfoObject = typeof(T).GetField(FieldName);
-            //var FieldInfoObject = t.GetField(FieldName, BindingFlags.Public | BindingFlags.IgnoreCase | BindingFlags.Static);
+        //public static FieldInfo GetFieldOrPropertyType<T>(string FieldName)
+        //{
+        //    //var cl = new Owner();
+        //    //Type t = cl.GetType();
+        //    ////var FieldInfoObject = typeof(T).GetField(FieldName);
+        //    //var FieldInfoObject = t.GetField(FieldName, BindingFlags.Public | BindingFlags.IgnoreCase | BindingFlags.Static);
 
-            //if (null != FieldInfoObject)
-            //{
-            //    return (FieldInfoObject);
-            //}
-            //else
-            //{
-            //    return (null);
-            //}
+        //    //if (null != FieldInfoObject)
+        //    //{
+        //    //    return (FieldInfoObject);
+        //    //}
+        //    //else
+        //    //{
+        //    //    return (null);
+        //    //}
 
-            var FieldInfoObject = typeof(T).GetField(FieldName, BindingFlags.Public | BindingFlags.IgnoreCase | BindingFlags.Static);
+        //    var FieldInfoObject = typeof(T).GetField(FieldName, BindingFlags.Public | BindingFlags.IgnoreCase | BindingFlags.Static);
 
-            if (null == FieldInfoObject)
-            {
+        //    if (null == FieldInfoObject)
+        //    {
 
-            }
+        //    }
 
-        }
+        //}
 
         public IEnumerable<T>? GetOwnersByConditions<T>(List<WebApiDynamicCommunication> WebApiDynamicCommunication_Object_List) where T : class
         {
@@ -129,47 +130,83 @@ namespace Repository
                         break;
 
                     default:
-                        var Test = typeof(T).GetProperty(WebApiDynamicCommunication_Object_List[Counter].FieldName);
-                        var Test1 = WebApiDynamicCommunication_Object_List[Counter].Value.GetType();
-                        var Test2 = typeof(T).GetField(WebApiDynamicCommunication_Object_List[Counter].FieldName);
-                        var Test3 = typeof(T).GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-                        //var Owner_Object = new Owner();
-                        //Type t = Owner_Object.GetType();
-                        //FieldInfo Test5 = t.GetField(WebApiDynamicCommunication_Object_List[Counter].FieldName,
-                        //        BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-                        //var NameTest5 = Test5.Name;
-                        //var TypeTest5 = Test5.FieldType;
+                        FieldInfo? FieldInfoObject = null;
+                        PropertyInfo? PropertyInfoObject = null;
+                        Type? FieldOrPropertyType = null;
 
-                        FieldInfo Info5 = GetFieldType<T>(WebApiDynamicCommunication_Object_List[Counter].FieldName);
+                        try
+                        {
+                            FieldInfoObject = typeof(T).GetField(WebApiDynamicCommunication_Object_List[Counter].FieldName,
+                                BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+                            if (null == FieldInfoObject)
+                            {
+                                PropertyInfoObject = typeof(T).GetProperty(WebApiDynamicCommunication_Object_List[Counter].FieldName,
+                                    BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+                            }
+                        }
+                        catch (Exception Error)
+                        {
+                            return (null);
+                        }
 
-                        //FieldInfo Test4 = typeof(T).GetField(WebApiDynamicCommunication_Object_List[Counter].FieldName,
-                        //        BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
-                        //var NameTest = Test4.Name;
-                        //var TypeTest = Test4.FieldType;
+                        if (null != FieldInfoObject)
+                        {
+                            FieldOrPropertyType = FieldInfoObject.FieldType;
+                        }
+                        else
+                        {
+                            if (null != PropertyInfoObject)
+                            {
+                                FieldOrPropertyType = PropertyInfoObject.PropertyType;
+                            }
+                        }
 
-                        var NameTest = Info5.Name;
-                        var TypeTest = Info5.FieldType;
+                        if (null != FieldOrPropertyType)
+                        {
+                            switch (FieldOrPropertyType.Name)
+                            {
+                                case nameof(Int32):
+                                    WebApiDynamicCommunication_Object_List[Counter].Value =
+                                        System.Text.Json.JsonSerializer.Deserialize<int>(WebApiDynamicCommunication_Object_List[Counter].Value);
+                                    break;
 
-                        //string TestName = Test3[1]).FieldType).Name.ToString();
+                                case nameof(String):
+                                    WebApiDynamicCommunication_Object_List[Counter].Value =
+                                        System.Text.Json.JsonSerializer.Deserialize<string>(WebApiDynamicCommunication_Object_List[Counter].Value);
+                                    break;
 
-                        //switch (((JsonTokenType)WebApiDynamicCommunication_Object_List[Counter].Value).GetType())
-                        //{
-                        //    case JsonTokenType.String:
+                                case nameof(Boolean):
+                                    WebApiDynamicCommunication_Object_List[Counter].Value =
+                                        System.Text.Json.JsonSerializer.Deserialize<bool>(WebApiDynamicCommunication_Object_List[Counter].Value);
+                                    break;
 
-                        //        break;
-                        //}
+                                case nameof(Single):  // float
+                                    WebApiDynamicCommunication_Object_List[Counter].Value =
+                                        System.Text.Json.JsonSerializer.Deserialize<float>(WebApiDynamicCommunication_Object_List[Counter].Value);
+                                    break;
 
-                        WebApiDynamicCommunication_Object_List[Counter].Value =
-                            System.Text.Json.JsonSerializer.Deserialize<string>(WebApiDynamicCommunication_Object_List[Counter].Value);
-                                                
-                        //WebApiDynamicCommunication_Object_List[Counter].Value =
-                        //    RemoveCharacters(WebApiDynamicCommunication_Object_List[Counter].Value);
-                        RepositoryExpressionCriteria_Object.Add(WebApiDynamicCommunication_Object_List[Counter].FieldName,
-                                                                WebApiDynamicCommunication_Object_List[Counter].Value,
-                                                                WebApiDynamicCommunication_Object_List[Counter].Expression);
-                        //WebApiDynamicCommunication WebApiDynamicCommunication_Object = new WebApiDynamicCommunication();
-                        //WebApiDynamicCommunication_Object =
-                        //    JsonSerializer.Deserialize<WebApiDynamicCommunication>(WebApiDynamicCommunication_Object_List[Counter].Value);
+                                case nameof(Double):
+                                    WebApiDynamicCommunication_Object_List[Counter].Value =
+                                        System.Text.Json.JsonSerializer.Deserialize<double>(WebApiDynamicCommunication_Object_List[Counter].Value);
+                                    break;
+
+                                case nameof(DateTime):
+                                    WebApiDynamicCommunication_Object_List[Counter].Value =
+                                        System.Text.Json.JsonSerializer.Deserialize<DateTime>(WebApiDynamicCommunication_Object_List[Counter].Value);
+                                    break;
+
+                                default:
+                                    return (null);
+                            }
+
+                            RepositoryExpressionCriteria_Object.Add(WebApiDynamicCommunication_Object_List[Counter].FieldName,
+                                                                    WebApiDynamicCommunication_Object_List[Counter].Value,
+                                                                    WebApiDynamicCommunication_Object_List[Counter].Expression);
+                        }
+                        else
+                        {
+                            return (null);
+                        }
                         break;
                 }
             }
